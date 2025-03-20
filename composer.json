@@ -1,0 +1,17 @@
+{
+    "name": "rodrigo/roteamento-php-vanilla",
+    "description": "Sistema de Roteamento MVC com PHP Vanilla",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "rodrigo-backend",
+            "email": "rodrigopereirafaria9@gmail.com"
+        }
+    ],
+    "require": {}
+}
