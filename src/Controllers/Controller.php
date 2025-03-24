@@ -7,4 +7,7 @@ namespace App\Controllers;
 // 1. criar controller
 class Controller{
     // métodos do controller para ser chamados no Core
+    public function hw(){
+        echo 'Hello World!';
+    }
 }

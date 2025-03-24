@@ -1,0 +1,21 @@
+# verifica se existe o módulo de rewrite
+<IfModule mod_rewrite.c>
+
+    # ativa a rewrite engine para mudar as regras de url do apache
+    RewriteEngine on
+
+    # base url do apache (por onde é executada a aplicação)
+    RewriteBase /roteamento-php-vanilla/public/
+
+    # verifica se o dado acessado na url não é um arquivo, se for acessa normalmente
+    RewriteCond %{REQUEST_FILENAME} !-f
+    
+    # verifica se o dado acessado na url não é um diretório, se for acessa normalmente
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # ^([A-Za-z0-9_/\\-]+)$: padrão em regex para aceitar letras maiúsculas, minúsculas, números, _, - e /
+
+    # index.php?uri=$1: a uri é query parameter do index.php
+    # [QSA,L]: mantém as query strings e determina que essa é a última linha de regra
+    RewriteRule ^([A-Za-z0-9_/\\-]+)$ index.php?uri=$1 [QSA,L]
+</IfModule>

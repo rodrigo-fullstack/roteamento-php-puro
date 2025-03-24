@@ -1,0 +1,2 @@
+# impede de indexar o diretório do servidor
+Options -Indexes

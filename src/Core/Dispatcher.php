@@ -1,23 +1,53 @@
 <?php
-namespace App\Http;
+namespace App\Core;
 
 use Exception;
 
-// 9. criar dispatcher para realizar direcionamento de rotas para controllers (objetivo dessa classe é reduzir a quantidade de responsabilidades do core)
 class Dispatcher
 {
     // recebe um controller e um método e executa sua ação
-    public function dispatch(string $controller, string $action)
-    {
-        // namespace do controller
-        $controller = 'App\\Controllers\\' . $controller;
+    public function dispatch(
+        string | callable $callback,
+        string | array $params = [],
+        string $namespace = "App\\Controllers\\"
+    ):  mixed {
 
+        // se for uma closure, chama ela automaticamente
+        if (is_callable($callback)) {
+            return call_user_func(
+                // recebe a função executando com os parâmetros indexados
+                $callback,
+                $params
+            );
+            
+        }
+
+        // controller e método recebem seus respectivos valores
+        // controller recebe o elemento 0
+        // método o elemento 1
+        // padrão de callback: Controller@method
+        [$controller, $method] = explode('@', $callback);
+
+        // prepara namespace do controller para instanciação
+        $controller = $namespace . $controller;
+
+        // verifica se o controller existe
+        if (! class_exists($controller)) {
+            throw new Exception("Controller $controller não encontrado.");
+        }
+
+        $controller = new $controller;
         // se não existe o método passado na action
-        if(!method_exists($controller, $action)){
-            throw new Exception('Action not found');
+        if (! method_exists($controller, $method)) {
+            throw new Exception("Método $method não encontrado no $controller.");
         }
         // instancia o controller e executa o método da action
-        (new $controller)->$action;
+        return call_user_func_array(
+            // passamos o controller com o método em array
+            [$controller, $method],
+            // passamos os parâmetros reindexados
+            array_values([$params])
+        );
 
     }
 }

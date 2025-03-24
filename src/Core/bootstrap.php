@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
-require __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Core\Core;
-use App\Core\RouteCollection;
+use App\Http\Request;
 
-$router = new Core(
-    new RouteCollection()
-);
+$router = new Core();
 require __DIR__ . '/../Http/routes.php';
 
-$router->dispatch();
+// testar sistema de rotas
