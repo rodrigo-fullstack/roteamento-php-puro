@@ -47,8 +47,6 @@ class Core
         // realiza injeção de dependência quando vai realizar o roteamento
         Request $request
     ): void {
-        // echo '<pre> Dentro do Resolve';
-        // print_r($request);
         // recupera a rota
         $route = $this->routes->match(
             $request->getMethod(), $request->getUri()
@@ -70,9 +68,14 @@ class Core
         // retorna o dispatcher despachando a rota com o callback e a uri
         return $this->dispatcher->dispatch(
             callback: $route->callback,
-            params: $route->uri,
+            params: $this->parseParams($route->uri),
             namespace: $namespace
         );
     }
 
+    public function parseParams($uri){
+        
+        return array_slice($uri, 1);
+        
+    }
 }
