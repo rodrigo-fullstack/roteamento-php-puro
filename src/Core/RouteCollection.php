@@ -55,52 +55,20 @@ class RouteCollection
             default => throw new Exception('Método não suportado.')
         };
 
-        // echo '<pre>';
-        // print_r($routes);
-
         // extrai a URI com análise sintática (parse)
         $parsedUri = $this->parseUri($uri);
 
-        echo '<pre>';
-        print_r($parsedUri);
-
-
-        
         // para cada rota verifica se corresponde
         foreach ($routes as $route) {
             // fazer verificação da rota
-            if ($route['pattern'] === $parsedUri) {
+            if (preg_match($route['pattern'], $parsedUri, $matches)) {
+                // retorna o objeto com o padrão verificado (quer dizer, quando encontra a rota que foi determinada na uri)
                 return (object) [
                     'callback' => $route['callback'],
-                    'uri'      => $route['pattern'],
+                    'uri'      => $matches,
                 ];
             }
-            echo '<pre>';
-            print_r($this->hasQueryParams($parsedUri, $route['pattern']));    
 
-            // verificar se possui query parameters
-            // preciso verificar se em cada parte do padrão existe uma string que inicia com { e termina com } e possui alguns caracter no meio
-            
-
-            
-            // não consegue identificar o padrão em regex
-            // preg_match()
-            // if (preg_match($route['pattern'], $parsedUri, $matches)) {
-
-            //     // retorna o objeto com o padrão verificado (quer dizer, quando encontra a rota que foi determinada na uri)
-            //     return (object) [
-            //         'callback' => $route['callback'],
-            //         'uri'      => $matches,
-            //     ];
-            // }
-        }
-
-        // foreach($routes as $route['pattern']){
-
-        // }
-
-
-        die();
         return null;
     }
 
@@ -109,23 +77,12 @@ class RouteCollection
     {
         $separatedUri = $this->explodeUri($uri);
         $slicedUri    = $this->sliceUri($separatedUri);
-        // echo '<pre> Exibindo uri    ';
-        // print_r($slicedUri === '' ? 'Vazia' : 'Preenchido');
         if ($slicedUri === '') {
             return $slicedUri;
         }
 
         $uri = $this->implodeUri($slicedUri);
         return $uri;
-        // provavelmente serve para consertar a URI que vem com contra barra
-        // echo '<pre>';
-        // print_r(implode('/', array_filter(
-        //     explode('/', $uri)
-        // )));
-        // return implode('/',
-        //     array_filter(
-        //         explode('/', $uri)
-        //     ));
     }
 
     // 6. define padrão da uri
@@ -135,20 +92,20 @@ class RouteCollection
             array_filter(
                 explode('/', $pattern)
             ));
-        // echo '<pre>';
-        // print_r($pattern);
-        // echo '<br>';
-        return $pattern;
 
-        // $pattern = preg_replace(
-        //     // transforma o {parametro} em regexpress
-        //     '/\{[a-zA-Z_]+\}/',
-        //     '([a-zA-z0-9_]+)',
-        //     $pattern
-        // );
+        $pattern = preg_replace(
+            // transforma o {parametro} em regexpress
+            '/\{[a-zA-Z_]+\}/',
+            // substitui para receber qualquer valor
+            '([a-zA-z0-9_]+)',
+
+            $pattern
+        );
+
+        $pattern = $pattern !== '' || $pattern !== '/' ? $pattern : '/?';
         // // retorna o padrão em forma de regex
-        // return '/^' . str_replace('/', '\/', $pattern) . '$/';
-
+        $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
+        return $pattern;
     }
 
     private function sliceUri(array $separatedUri)
@@ -174,38 +131,5 @@ class RouteCollection
     private function implodeUri(array $separatedUri)
     {
         return implode('/', $separatedUri);
-    }
-
-    private function hasQueryParams(mixed $uri, string $pattern){
-        
-        
-        $uri = explode('/', $uri);
-        $pattern = explode('/', $pattern);
-        echo '<pre>';
-        for($i = 0; $i < count($pattern); $i++){
-            $strlen = mb_strlen($uri);
-            if($this->hasValidQueryParam([
-                'strlen' => $strlen,
-                'startPartUrl' => $partUrl[0],
-                'endPartUrl' => $partUrl[$strlen - 1]
-            ])){
-                return true;
-            }
-
-        }
-
-        print_r($pattern);
-        echo '<pre>';
-        print_r($uri);
-
-        // die();
-
-        
-    }
-
-    private function hasValidQueryParam(array $data){
-        return $data['strlen'] !== 2 
-        && $data['startPartUrl'][0] === '{' 
-        && $data['endPartUrl'] === '}';
     }
 }
