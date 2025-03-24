@@ -17,7 +17,7 @@ class Dispatcher
             return call_user_func(
                 // recebe a função executando com os parâmetros indexados
                 $callback,
-                $params
+                array_values($params)
             );
             
         }
@@ -36,17 +36,17 @@ class Dispatcher
             throw new Exception("Controller $controller não encontrado.");
         }
 
-        $controller = new $controller;
-        // se não existe o método passado na action
         if (! method_exists($controller, $method)) {
             throw new Exception("Método $method não encontrado no $controller.");
         }
+        $controller = new $controller;
+        // se não existe o método passado na action
         // instancia o controller e executa o método da action
         return call_user_func_array(
             // passamos o controller com o método em array
             [$controller, $method],
             // passamos os parâmetros reindexados
-            array_values([$params])
+            array_values($params)
         );
 
     }
