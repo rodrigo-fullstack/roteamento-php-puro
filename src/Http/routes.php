@@ -3,13 +3,36 @@
 // define o router como global
 global $router;
 
-// 1 parametro é a rota, segundo é a ação inicialmente.
+/**
+ * Roteamento através do router:
+ * $router->metodo('/rota', 'Controladora@Método');
+ * $router->metodo('/rota', function(){
+ * 
+ * });
+ */
 
-// no 1 parâmetro realiza a verificação através de regexpressions se está entre /
-$router->get('/', fn() => print 'Hello World');
+/**
+ * Acessa somente com método get sem query params
+ */
+$router->get('/get-sem-param', 'Controller@getSemParam');
 
-// no segundo parâmetro com a função dispatch executa o callback através do método recebido no servidor e a uri
-$router->get('sobre', fn() => print 'Pagina sobre!');
-$router->get('/users/store', fn() => print 'Pagina sobre!');
-$router->get('helloWorld/users/{id}/{email}', 'Controller@hwid');
-$router->get('/helloWorld', 'Controller@hw');
+/**
+ * Acessa somente com método get com query params
+ */
+$router->get('/get-com-param/{valor}', 'Controller@getComParam');
+
+/**
+ * Acessa somente com método post sem query params
+ */
+$router->post('/post', 'Controller@post');
+
+/**
+ * Acessa somente com método delete com request
+ */
+$router->delete('/delete-com-request', 'Controller@deleteComRequest');
+
+/**
+ * Acessa somente com método delete sem request
+ */
+$router->delete('/delete-sem-request', 'Controller@deleteSemRequest');
+
