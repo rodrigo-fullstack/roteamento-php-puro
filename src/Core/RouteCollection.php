@@ -6,47 +6,77 @@ namespace App\Core;
 
 use Exception;
 
-// 2. criar conjuntos de rotas
+/**
+ * Armazena o conjunto de rotas get, put, post ou delete e executa ações sobre elas como verificar se o uri corresponde, adicionar novas rotas, tratar URI e outros métodos.
+ */
 class RouteCollection
 {
-    public array $routesGet    = [];
-    // users GET
-    public array $routesPost   = [];
-    // users/store POST
-    public array $routesPut    = [];
-    // users/update PUT
-    public array $routesDelete = [];
-    // users/delete DELETE
 
-    // 3. adicionar rota a conjunto de rotas de acordo com o método passado
+    /**
+     * Armazena todas as rotas get.
+     * @var array
+     */
+    public array $routesGet = [];
+    
+    /**
+     * Armazena todas as rotas post.
+     * @var array
+     */
+    public array $routesPost = [];
+    
+    /**
+     * Armazena todas as rotas put.
+     * @var array
+     */
+    public array $routesPut = [];
+    
+    /**
+     * Armazena todas as rotas delete.
+     * @var array
+     */
+    public array $routesDelete = [];
+
+    /**
+     * Adiciona uma rota a um dos arrays de rotas de acordo com o método, padrão de uri ou callback.
+     * @param string $method
+     * @param string $pattern
+     * @param callable|string $callback
+     * @throws \Exception
+     * @return void
+     */
     public function add(
         string $method, string $pattern, callable | string $callback,
     ) {
-        // define a rota
+
+        // Define a rota.
         $route = [
-            // com um padrão
             'pattern'  => $this->definePattern($pattern),
-            // e um método
             'callback' => $callback,
         ];
 
+        // Identifica qual o método e atribui a rota dependendo do método.
         match (strtolower($method)) {
-            // atribui a rota dependendo do método
             'get' => $this->routesGet[]       = $route,
             'post' => $this->routesPost[]     = $route,
             'put' => $this->routesPut[]       = $route,
             'delete' => $this->routesDelete[] = $route,
 
-        // se não existir esse método, retorna que não é suportado.
+        // Se não existir esse método, retorna que não é suportado.
             default => throw new Exception('Método não suportado.')
         };
     }
 
-    // 4. verifica a rota correspondente à uri
+    /**
+     * Verifica se uma Uri passada corresponde às rotas armazenadas no sistema.
+     * @param string $method
+     * @param string $uri
+     * @throws \Exception
+     * @return object|null
+     */
     public function match(string $method, string $uri): ?object
     {
-        // retorna as rotas de acordo com o método
-
+        
+        // Retorna as rotas de acordo com o método.
         $routes = match ($method) {
             'get' => $this->routesGet,
             'post' => $this->routesPost,
