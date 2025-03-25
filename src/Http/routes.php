@@ -27,6 +27,11 @@ $router->get('/get-com-param/{valor}', 'Controller@getComParam');
 $router->post('/post', 'Controller@post');
 
 /**
+ * Acessa somente com método post sem query params (pela submissão de formulário).
+ */
+$router->put('/put', 'Controller@put');
+
+/**
  * Acessa somente com método delete com request (pela submissão de formulário ou solicitação assíncrona).
  */
 $router->delete('/delete-com-request', 'Controller@deleteComRequest');
