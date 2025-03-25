@@ -1,6 +1,6 @@
 <?php
 
-// define o router como global
+// Define o router como global
 global $router;
 
 /**
@@ -12,27 +12,27 @@ global $router;
  */
 
 /**
- * Acessa somente com método get sem query params
+ * Acessa somente com método get sem query params (pela url do navegador).
  */
 $router->get('/get-sem-param', 'Controller@getSemParam');
 
 /**
- * Acessa somente com método get com query params
+ * Acessa somente com método get com query params (pela url do navegador).
  */
 $router->get('/get-com-param/{valor}', 'Controller@getComParam');
 
 /**
- * Acessa somente com método post sem query params
+ * Acessa somente com método post sem query params (pela submissão de formulário).
  */
 $router->post('/post', 'Controller@post');
 
 /**
- * Acessa somente com método delete com request
+ * Acessa somente com método delete com request (pela submissão de formulário ou solicitação assíncrona).
  */
 $router->delete('/delete-com-request', 'Controller@deleteComRequest');
 
 /**
- * Acessa somente com método delete sem request
+ * Acessa somente com método delete sem request (pela submissão de formulário ou solicitação assíncrona).
  */
 $router->delete('/delete-sem-request', 'Controller@deleteSemRequest');
 

@@ -56,7 +56,7 @@ class Controller{
     }
 
     /**
-     * Executa o método Delete com injeção de dependência Request 
+     * Executa o método Delete com injeção de dependência Request (não pode ser acessado pela url).
      * @param \App\Http\Request $request
      * @return void
      */
@@ -66,6 +66,10 @@ class Controller{
 
     }
 
+    /**
+     * Acessado com método delete sem injeção de dependência de Request (não pode ser acessado pela url).
+     * @return void
+     */
     public function deleteSemRequest(){
         print_r('Página acessada com método delete sem injeção de dependência na controladora!');
 

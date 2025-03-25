@@ -100,14 +100,14 @@ class Core
     }
 
     /**
-     * Realiza o despache das rotas pelo objeto Dispatch
+     * Realiza o despache das rotas pelo objeto Dispatch.
      * @param object $route
      * @param string $namespace
      * @return mixed
      */
     public function dispatch(object $route, string $namespace = "App\\Controllers\\"): mixed
     {
-        // Retorna o dispatcher despachando a rota com o callback e a uri
+        // Retorna o dispatcher despachando a rota com o callback e a uri.
         return $this->dispatcher->dispatch(
             callback: $route->callback,
             params: $this->parseParams($route->uri),
@@ -117,7 +117,7 @@ class Core
     }
 
     /**
-     * Realiza o tratamento dos parâmetros com base na uri fornecida vinda da função preg_match da regular expression de RouterCollection->match();
+     * Realiza o tratamento dos parâmetros com base na uri fornecida vinda da função preg_match da regular expression de RouterCollection->match().
      * @param mixed $uri
      */
     public function parseParams($uri)

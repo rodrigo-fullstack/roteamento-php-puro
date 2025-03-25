@@ -1,6 +1,6 @@
 <?php
 
-// declare (strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Core;
 
@@ -149,7 +149,7 @@ class RouteCollection
     }
 
     /**
-     * Realiza a junção da URI modificada pelas /
+     * Realiza a junção da URI modificada pelas /.
      * @param array $separatedUri
      * @return string
      */

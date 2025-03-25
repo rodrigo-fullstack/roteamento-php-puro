@@ -3,14 +3,20 @@
 declare(strict_types=1);
 use App\Http\Request;
 
+/**
+ * Exibição de erros no navegador (não recomendado para ambientes de produção).
+ */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
+/**
+ * Realiza a chamada do Router.
+ */
 require __DIR__ . '/../src/Core/bootstrap.php';
 
 $request = new Request();
 
-// echo '<pre>';
-// print_r($request);
+// Passa a requisição da URI e o método pelo objeto Request.
 $router->resolve($request);
