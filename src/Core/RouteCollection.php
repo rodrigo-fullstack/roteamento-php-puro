@@ -85,14 +85,15 @@ class RouteCollection
             default => throw new Exception('Método não suportado.')
         };
 
-        // extrai a URI com análise sintática (parse)
+        // Extrai a URI separando a parte desnecessária.
         $parsedUri = $this->parseUri($uri);
 
-        // para cada rota verifica se corresponde
+        // Para cada rota verifica se corresponde ao padrão pela função preg_match.
         foreach ($routes as $route) {
-            // fazer verificação da rota
+
+            // Se o padrão está presente na uri então vai retornar um objeto da rota a partir do que foi identificado em matches.
             if (preg_match($route['pattern'], $parsedUri, $matches)) {
-                // retorna o objeto com o padrão verificado (quer dizer, quando encontra a rota que foi determinada na uri)
+                
                 return (object) [
                     'callback' => $route['callback'],
                     'uri'      => $matches,
@@ -100,50 +101,43 @@ class RouteCollection
             }
 
         }
+
+        // Se não corresponder retornará um nulo.
         return null;
     }
 
-    // 5. analisa a sintaxe da uri
+    /**
+     * Separa a parte da URI necessária para ser verificada.
+     * @param string $uri
+     * @return string
+     */
     private function parseUri(string $uri)
     {
+        // Separa a URI por barras.
         $separatedUri = $this->explodeUri($uri);
-        $slicedUri    = $this->sliceUri($separatedUri);
+        
+        // Despreza o início da URI "roteamento-php-vanilla/public" sobrando somente o que vem depois de public.
+        $slicedUri = $this->sliceUri($separatedUri);
+
+        // Retorna vazio se o resultado do desprezo acima foi um array vazio; Se não, retorna a URI unida com / novamente.
         return $slicedUri === [] ? '' : $this->implodeUri($slicedUri);
-        
-        // if ($slicedUri === []) {
-        //     return '';
-        // }
-
-        // $uri = $this->implodeUri($slicedUri);
-        // return $uri;
     }
 
-    // 6. define padrão da uri
-    private function definePattern(string $pattern)
+     /**
+     * Separa a URI pelas /.
+     * @param string $uri
+     * @return bool|string[]
+     */
+    private function explodeUri(string $uri)
     {
-        $pattern = implode('/',
-            array_filter(
-                explode('/', $pattern)
-            ));
-
-        $pattern = preg_replace(
-            // transforma o {parametro} em regexpress
-            '/\{[a-zA-Z_]+\}/',
-            // substitui para receber qualquer valor
-            '([a-zA-z0-9_]+)',
-
-            $pattern
-        );
-
-        $pattern = $pattern !== '' || $pattern !== '/' ? $pattern : '/?';
-        if($pattern === '' || $pattern === '/'){
-            $pattern = '/?';
-        }
-        // // retorna o padrão em forma de regex
-        
-        return '/^' . str_replace('/', '\/', $pattern) . '$/';
+        return explode('/', $uri);
     }
 
+    /**
+     * Despreza a parte do uri relativo aos diretórios da aplicação: roteamento-php-vanilla/public.
+     * @param array $separatedUri
+     * @return array
+     */
     private function sliceUri(array $separatedUri)
     {
         return array_slice(
@@ -154,14 +148,42 @@ class RouteCollection
 
     }
 
-    private function explodeUri(string $uri)
-    {
-        // se eu colocasse a baseUrl como separator, mantém somente as /
-        return explode('/', $uri);
-    }
-
+    /**
+     * Realiza a junção da URI modificada pelas /
+     * @param array $separatedUri
+     * @return string
+     */
     private function implodeUri(array $separatedUri)
     {
         return implode('/', $separatedUri);
+    }
+
+    /**
+     * Define padrão da URI para ser armazenado nos arrays de rotas.
+     * @param string $pattern
+     * @return string
+     */
+    private function definePattern(string $pattern)
+    {
+        // Filtra o padrão separando com / e juntando novamente.
+        $pattern = implode('/',
+            array_filter(
+                explode('/', $pattern)
+            ));
+
+        // Substitui no lugar de {Alguma_coisa} a expressão regular correspondente para receber qualquer dado.
+        $pattern = preg_replace(
+            '/\{[a-zA-Z_]+\}/',
+            '([a-zA-z0-9_]+)',
+            $pattern
+        );
+
+        // Se o resultado dessa substituição foi um vazio ou somente uma /, coloca que o padrão é uma /? (/ opcional).
+        if ($pattern === '' || $pattern === '/') {
+            $pattern = '/?';
+        }
+        
+        // Retorna o padrão em forma de regex '/^' início da string, str_replace('/', '\/', $pattern) padrão da string, '$/';.
+        return '/^' . str_replace('/', '\/', $pattern) . '$/';
     }
 }
