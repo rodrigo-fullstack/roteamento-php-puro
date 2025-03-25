@@ -8,10 +8,10 @@ namespace App\Controllers;
 class Controller{
     // métodos do controller para ser chamados no Core
     public function hw(){
-        return 'Hello World sem parâmetro!';
+        echo 'Hello World sem parâmetro!';
     }
     
     public function hwid($id, $email){
-        return "Hello World com parâmetro! $id $email";
+        echo "Hello World com parâmetro! $id $email";
     }
 }

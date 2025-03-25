@@ -53,12 +53,14 @@ class Core
         );
 
         // se não encontrar a rota retorna um not found
-        if ($route === null) {
-            $this->notFound();
-            return;
-        }
+        $route === null ? 
+            (function(){
+                $this->notFound();
+                return;
+            })() :
+            $this->dispatch($route);
+        
 
-        $this->dispatch($route);
 
     }
 

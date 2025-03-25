@@ -69,6 +69,7 @@ class RouteCollection
                 ];
             }
 
+        }
         return null;
     }
 
@@ -77,12 +78,14 @@ class RouteCollection
     {
         $separatedUri = $this->explodeUri($uri);
         $slicedUri    = $this->sliceUri($separatedUri);
-        if ($slicedUri === '') {
-            return $slicedUri;
-        }
+        return $slicedUri === [] ? '' : $this->implodeUri($slicedUri);
+        
+        // if ($slicedUri === []) {
+        //     return '';
+        // }
 
-        $uri = $this->implodeUri($slicedUri);
-        return $uri;
+        // $uri = $this->implodeUri($slicedUri);
+        // return $uri;
     }
 
     // 6. define padrão da uri
@@ -103,23 +106,22 @@ class RouteCollection
         );
 
         $pattern = $pattern !== '' || $pattern !== '/' ? $pattern : '/?';
+        if($pattern === '' || $pattern === '/'){
+            $pattern = '/?';
+        }
         // // retorna o padrão em forma de regex
-        $pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
-        return $pattern;
+        
+        return '/^' . str_replace('/', '\/', $pattern) . '$/';
     }
 
     private function sliceUri(array $separatedUri)
     {
-        $slicedUri = array_slice(
+        return array_slice(
             $separatedUri,
             2,
             count($separatedUri)
         );
-        if ($slicedUri === []) {
-            return '';
-        }
 
-        return $slicedUri;
     }
 
     private function explodeUri(string $uri)
