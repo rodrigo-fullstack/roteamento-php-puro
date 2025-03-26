@@ -91,17 +91,17 @@ class Dispatcher
         foreach($reflectionParameters as $param){
             // TODO: Realizar verificação para todo tipo de classe injetada, não somente o controller..
             
-            // Recupera nome do parâmetro e tipo
+            // Recupera nome do parâmetro e tipo.
             $namespaceDependency = $param->getType()->getName();
             
-            // Se não é instanciável, repete a estrutura de repetição
+            // Se não é instanciável, repete a estrutura de repetição.
             if(!class_exists($namespaceDependency)){ 
                 continue; 
             }
 
             // Instancia a Dependência.
             $dependency = new $namespaceDependency();
-            // Adiciona a dependência ao array de dependências
+            // Adiciona a dependência ao array de dependências.
             $dependencies[] = $dependency; 
         }
         
@@ -126,6 +126,12 @@ class Dispatcher
         return $params;
     }
 
+    /**
+     * Insere na posição determinada no array. Realiza a inserção começando do fim até a posição determinada. O objetivo dessa função é ordenar as dependências do array de parâmetros para ser identificadas na instância da Controller.
+     * @param mixed $value
+     * @param mixed $position
+     * @param mixed $array
+     */
     private function insertInPosition($value, $position, $array){
         // Itera sobre o array do início do fim ao início movendo cada elemento uma casa à frente.
         for ($i = count($array); $i > $position; $i--){
