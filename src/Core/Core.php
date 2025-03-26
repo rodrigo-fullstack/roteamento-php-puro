@@ -121,7 +121,6 @@ class Core
      */
     private function parseParams($uri)
     {
-
         return array_slice($uri, 1);
 
     }
