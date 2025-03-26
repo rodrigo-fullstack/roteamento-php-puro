@@ -13,7 +13,7 @@ use ReflectionParameter;
  */
 class Dispatcher
 {
-    
+
     /**
      * Realiza o despache da ação necessária. Quando é uma closure (callback) que é passado, realiza a chamada da closure especificada. Quando é um controller com um método passado com @ (Controller@método), verifica se o controller existe, se o método existe, instancia uma dependência de Requisição para o método caso seja necessário e por fim executa o método.
      * @param string|callable $callback
@@ -53,9 +53,6 @@ class Dispatcher
             throw new Exception("Método $method não encontrado no $controller.");
         }
 
-        print_r($controller);
-        print_r($method);
-        print_r($params);
         // Realiza injeção de dependência do Request nos parâmetros.
         $params = $this->injectDependency($controller, $method, $params);
 

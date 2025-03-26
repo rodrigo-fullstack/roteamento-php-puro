@@ -89,8 +89,6 @@ class Core
             $request->getMethod(), $request->getUri()
         );
 
-        print_r(!$route ? 'Nulo' : 'Preenchido');
-
         // Se não encontrar essa rota, retorna um erro 404 not found; se encontrar vai realizar o despache da rota.
         $route === null ?
         (function () {
