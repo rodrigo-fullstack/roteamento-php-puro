@@ -125,4 +125,18 @@ class Dispatcher
         // Retorna os parâmetros.
         return $params;
     }
+
+    private function insertInPosition($value, $position, $array){
+        // Itera sobre o array do início do fim ao início movendo cada elemento uma casa à frente.
+        for ($i = count($array); $i > $position; $i--){
+            // O atual (no caso a quantidade de elementos no início) recebe o anterior.
+            $array[$i] = $array[$i-1];    
+            // O anterior recebe nulo.
+            $array[$i-1] = null;
+        }
+
+        // Quando chega na posição, que vai estar vazia, atribui o valor requisitado.
+        $array[$position] = $value;
+        return $array;
+    }
 }
