@@ -29,6 +29,11 @@ $router->post('/post', 'Controller@post');
 /**
  * Acessa somente com método post sem query params (pela submissão de formulário).
  */
+$router->post('/post-com-param', 'Controller@postQueryParams');
+
+/**
+ * Acessa somente com método post sem query params (pela submissão de formulário).
+ */
 $router->put('/put', 'Controller@put');
 
 /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Http\Request;
+use App\Services\Service;
 
 /**
  * Controladora executa ações do sistema com base na requisição do cliente e retorna uma resposta do servidor para o computador que requisita as informações.
@@ -39,6 +40,15 @@ class Controller{
      */
     public function post(Request $request){
         print_r('Página acessada com método Post e injeção de dependência na controladora de Request<br>');
+
+        // Recupera os dados da requisição como dados de cadastro, login, dentre outros.
+        print_r($request->getBody());
+
+    }
+    
+    public function postQueryParams(Request $request, int $id){
+        print_r('Página acessada com método Post e injeção de dependência na controladora de Request e query param: <br>');
+        print_r('ID: ' . $id);
 
         // Recupera os dados da requisição como dados de cadastro, login, dentre outros.
         print_r($request->getBody());

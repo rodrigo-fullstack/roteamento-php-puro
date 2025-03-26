@@ -15,7 +15,7 @@ class Dispatcher
 {
     
     /**
-     * Realiza o despache da ação necessária. Quando é uma closure (callback) que é passado, realiza a chamada da closure especificada. Quando é um controller com um método passado com @ (Controller@método), verifica se o controller existe, se o método existe.
+     * Realiza o despache da ação necessária. Quando é uma closure (callback) que é passado, realiza a chamada da closure especificada. Quando é um controller com um método passado com @ (Controller@método), verifica se o controller existe, se o método existe, instancia uma dependência de Requisição para o método caso seja necessário e por fim executa o método.
      * @param string|callable $callback
      * @param string|array $params
      * @param string $namespace
@@ -53,6 +53,9 @@ class Dispatcher
             throw new Exception("Método $method não encontrado no $controller.");
         }
 
+        print_r($controller);
+        print_r($method);
+        print_r($params);
         // Realiza injeção de dependência do Request nos parâmetros.
         $params = $this->injectDependency($controller, $method, $params);
 
@@ -73,7 +76,8 @@ class Dispatcher
      * @param mixed $method
      * @param mixed $params
      */
-    public function injectDependency($controller, $method, $params){
+    private function injectDependency($controller, $method, $params){
+        
         // Utiliza classe reflectionAPI para analisar propriedades e métodos da classe a ser analisada.
         $reflectionClass = new ReflectionClass($controller);
         
@@ -106,9 +110,9 @@ class Dispatcher
 
                 // Se não, deixa o Request como sendo o primeiro como parâmetro de seu controlador.
             } else{
-                for ($i = count($params); $i > 0; $i++){
-                    $params[$i+1] = $params[$i];    
-                    $params[$i] = null;
+                for ($i = count($params); $i > 0; $i--){
+                    $params[$i] = $params[$i-1];    
+                    $params[$i-1] = null;
                 }
                 $params[0] = $request;
             }

@@ -11,7 +11,7 @@ class Core
 {
 
     /**
-     * Instância o roteamento passando como parâmetro o RouteCollection e o Dispatcher de maneira manual.
+     * Instancia o roteamento passando como parâmetro o RouteCollection e o Dispatcher de maneira manual.
      * @param \App\Core\RouteCollection $routes
      * @param \App\Core\Dispatcher $dispatcher
      */
@@ -89,11 +89,12 @@ class Core
             $request->getMethod(), $request->getUri()
         );
 
+        print_r(!$route ? 'Nulo' : 'Preenchido');
+
         // Se não encontrar essa rota, retorna um erro 404 not found; se encontrar vai realizar o despache da rota.
         $route === null ?
         (function () {
             $this->notFound();
-            return;
         })() :
         $this->dispatch($route);
 
@@ -120,7 +121,7 @@ class Core
      * Realiza o tratamento dos parâmetros com base na uri fornecida vinda da função preg_match da regular expression de RouterCollection->match().
      * @param mixed $uri
      */
-    public function parseParams($uri)
+    private function parseParams($uri)
     {
 
         return array_slice($uri, 1);
