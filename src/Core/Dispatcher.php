@@ -84,34 +84,41 @@ class Dispatcher
         // Recupera os parâmetros do método.
         $reflectionParameters = $reflectionMethod->getParameters();
 
+        // Armazena as dependências na ordem em que forem detectadas.
+        $dependencies = [];
+
         // Para cada parâmetro verifica se corresponde ao Request do Controller.
         foreach($reflectionParameters as $param){
             // TODO: Realizar verificação para todo tipo de classe injetada, não somente o controller..
             
-            // Verifica se o parâmetro possui o nome request e é do tipo Request.
-            if($param->getName() === 'request' && 
-                $param->getType()->getName() === 'App\\Http\\Request'){
-
-                // Instancia o Request.
-                $request = new Request(); 
-                break;
+            // Recupera nome do parâmetro e tipo
+            $namespaceDependency = $param->getType()->getName();
+            
+            // Se não é instanciável, repete a estrutura de repetição
+            if(!class_exists($namespaceDependency)){ 
+                continue; 
             }
+
+            // Instancia a Dependência.
+            $dependency = new $namespaceDependency();
+            // Adiciona a dependência ao array de dependências
+            $dependencies[] = $dependency; 
         }
+        
+            // Se há dependências para ser injetadas, atribui ao array de parâmetros que pode estar incluso com parâmetros de query params.
+        if(!empty($dependencies)){
 
-        // Se está definido o request como parâmetro.
-        if(isset($request)){
+            // Se somente houver dependências para ser injetadas retorna elas mesmas para ser o array de parâmetros.
+            if(count($dependencies) === count($reflectionParameters)
+            ){
+                return $dependencies;
 
-            // Se os parâmetros for iguais a 1 atribui um único parâmetro como sendo o próprio request.
-            if(count($params) === 1){
-                $params[0] = $request;
+            } 
 
-                // Se não, deixa o Request como sendo o primeiro como parâmetro de seu controlador.
-            } else{
-                for ($i = count($params); $i > 0; $i--){
-                    $params[$i] = $params[$i-1];    
-                    $params[$i-1] = null;
-                }
-                $params[0] = $request;
+            // Se não, atribui ao array de parâmetros todas as dependências uma a uma na ordem em que foram encontradas. (Algoritmo de Notação Big O Quadrática).
+            // TODO: Buscar solução para remover notação Big O Quadrática antiperformance.
+            for($i = 0; $i < count($dependencies); $i++){
+                $params = $this->insertInPosition($dependencies[$i], $i, $params);
             }
         }
 
