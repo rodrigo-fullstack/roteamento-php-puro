@@ -5,7 +5,7 @@
     RewriteEngine on
 
     # base url do apache (por onde é executada a aplicação)
-    RewriteBase /roteamento-php-vanilla/public/
+    RewriteBase /roteamento-php-puro/public/
 
     # verifica se o dado acessado na url não é um arquivo, se for acessa normalmente
     RewriteCond %{REQUEST_FILENAME} !-f
