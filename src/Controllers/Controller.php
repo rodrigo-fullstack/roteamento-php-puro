@@ -4,6 +4,10 @@ declare (strict_types = 1);
 
 namespace App\Controllers;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use App\Http\Request;
 use App\Services\Service;
 
@@ -46,7 +50,9 @@ class Controller
         print_r('Página acessada com método Post e injeção de dependência na controladora de Request<br>');
 
         // Recupera os dados da requisição como dados de cadastro, login, dentre outros.
-        print_r($request->getBody());
+        echo '<pre>';
+        print_r('Request: ');
+        print_r($request);
 
     }
 
@@ -56,7 +62,9 @@ class Controller
         print_r('ID: ' . $id);
 
         // Recupera os dados da requisição como dados de cadastro, login, dentre outros.
-        print_r($request->getBody());
+        echo '<pre>';
+        print_r('Request: ');
+        print_r($request);
 
     }
 
@@ -66,11 +74,16 @@ class Controller
         int $id
     ) {
         print_r('Página acessada com método Post e injeção de dependência na controladora de Request e Service e query param: <br>');
-        print_r('ID: ' . $id);
+        print_r('ID: ' . $id . '<br>');
 
         // Recupera os dados da requisição como dados de cadastro, login, dentre outros.
-        print_r($request->getBody());
+        echo '<pre>';
+        print_r('Request: ');
+        print_r($request);
+        print_r('<br>');
+        print_r('Service: ');
         print_r($service);
+        echo '</pre>';
 
     }
 
@@ -82,7 +95,9 @@ class Controller
     public function put(Request $request)
     {
         print_r('Página acessada com método Put e injeção de dependência na controladora de Request<br>');
-        print_r($request->getBody());
+        echo '<pre>';
+        print_r('Request: ');
+        print_r($request);
     }
 
     /**
@@ -93,7 +108,9 @@ class Controller
     public function deleteComRequest(Request $request)
     {
         print_r('Página acessada com método delete e injeção de dependência na controladora de Request<br>');
-        print_r($request->getBody());
+        echo '<pre>';
+        print_r('Request: ');
+        print_r($request);
 
     }
 
