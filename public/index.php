@@ -16,7 +16,8 @@ error_reporting(E_ALL);
  */
 require __DIR__ . '/../src/Core/bootstrap.php';
 
-$request = new Request();
 
+// TODO: Investigar como fazer para injetar dependência com a instância do core sem injetar manualmente.
+$request = new Request();
 // Passa a requisição da URI e o método pelo objeto Request.
 $router->resolve($request);
