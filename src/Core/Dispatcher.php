@@ -89,10 +89,14 @@ class Dispatcher
 
         // Para cada parâmetro verifica se corresponde ao Request do Controller.
         foreach($reflectionParameters as $param){
-            // TODO: Realizar verificação para todo tipo de classe injetada, não somente o controller..
+            // Recupera classe do parâmetro. 
+            // Se não for um tipo válido, retorna nulo com a ?
+            $namespaceDependency = $param->getType()?->getName();
             
-            // Recupera nome do parâmetro e tipo.
-            $namespaceDependency = $param->getType()->getName();
+            // Evitar nulo para query params
+            if(!$namespaceDependency){
+                continue;
+            }
 
             // Se não é instanciável, repete a estrutura de repetição.
             if(!class_exists($namespaceDependency)){ 
