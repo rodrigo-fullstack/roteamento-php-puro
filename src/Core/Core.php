@@ -91,9 +91,7 @@ class Core
 
         // Se não encontrar essa rota, retorna um erro 404 not found; se encontrar vai realizar o despache da rota.
         $route === null ?
-        (function () {
-            $this->notFound();
-        })() :
+        $this->notFound() :
         $this->dispatch($route);
 
     }

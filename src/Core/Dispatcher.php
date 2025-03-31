@@ -24,7 +24,7 @@ class Dispatcher
      */
     public function dispatch(
         string | callable $callback,
-        string | array $params = [],
+        array $params = [],
         string $namespace = "App\\Controllers\\"
     ):  mixed {
 
@@ -54,7 +54,7 @@ class Dispatcher
         }
 
         // Realiza injeção de dependência do Request nos parâmetros.
-        $params = $this->injectDependency($controller, $method, $params);
+        $params = $this->injectDependencies($controller, $method, $params);
 
         // Instancia a Controladora.
         $controller = new $controller;
@@ -69,11 +69,11 @@ class Dispatcher
 
     /**
      * Injeta dependência via método na Controladora caso haja Request como Parâmetro.
-     * @param mixed $controller
-     * @param mixed $method
-     * @param mixed $params
+     * @param string $controller
+     * @param string $method
+     * @param array $params
      */
-    private function injectDependency($controller, $method, $params){
+    private function injectDependencies(string $controller, string $method, array $params){
         
         // Utiliza classe reflectionAPI para analisar propriedades e métodos da classe a ser analisada.
         $reflectionClass = new ReflectionClass($controller);
@@ -93,7 +93,7 @@ class Dispatcher
             
             // Recupera nome do parâmetro e tipo.
             $namespaceDependency = $param->getType()->getName();
-            
+
             // Se não é instanciável, repete a estrutura de repetição.
             if(!class_exists($namespaceDependency)){ 
                 continue; 
@@ -127,12 +127,12 @@ class Dispatcher
     }
 
     /**
-     * Insere na posição determinada no array. Realiza a inserção começando do fim até a posição determinada. O objetivo dessa função é ordenar as dependências do array de parâmetros para ser identificadas na instância da Controller.
+     * Insere na posição determinada no array. Realiza a inserção começando do fim até a posição determinada. O objetivo dessa função é ordenar as dependências do array de parâmetros para ser identificadas na instância da Controller. É feita movendo cada elemento uma casa à frente e atribuindo o elemento atual começando no fim ao elemento anterior. (Outra maneira seria criar um novo array com os elementos que não pertencem à posição e combinar em um único array.)
      * @param mixed $value
-     * @param mixed $position
-     * @param mixed $array
+     * @param int $position
+     * @param array $array
      */
-    private function insertInPosition($value, $position, $array){
+    private function insertInPosition(mixed $value, int $position, array $array){
         // Itera sobre o array do início do fim ao início movendo cada elemento uma casa à frente.
         for ($i = count($array); $i > $position; $i--){
             // O atual (no caso a quantidade de elementos no início) recebe o anterior.
