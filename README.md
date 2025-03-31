@@ -27,30 +27,29 @@ Fonte do Projeto (feito até a parte 2):
 
 ## Conceitos Implementados 
 
-### PHP
+### PHP (Linguagem e Recursos Fundamentais)
 
-* Variáveis
-* Arrays
-* Closures
-* Execução de Closures ou Métodos de Controladores
+* Variáveis e Tipagem
+* Arrays e Estruturas de Dados
+* Funções e Closures
+* Execução de Closures e Métodos Dinâmicos
 
-### OOP
+### Programação Orientada a Objetos (OOP) em PHP
 
-* Classes
-* Propriedades
-* Métodos
-* ReflectionAPI
-* Instância dinâmica de Classes
+* Classes e Objetos
+* Propriedades e Métodos
+* Instanciação Dinâmica de Classes
+* Reflection API
 
-### Backend
+### Backend e Desenvolvimento Web
 
-* Configuração de Servidores
-* Armazenamento das informações da Requisição do Cliente
-* Roteamento 
-* URL Friendly
+* Configuração de Servidor
+* Manipulação de Requisições HTTP
+* Roteamento e URL Amigáveis
 
 ### Arquitetura de Software
 
-* Arquitetura MVC
-* Injeção de Dependência
+* Padrão MVC (Model-View-Controller)
+* Injeção de Dependência e Gerenciamento de Serviços
+
 
