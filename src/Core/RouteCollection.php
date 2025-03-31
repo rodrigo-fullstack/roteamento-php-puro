@@ -107,12 +107,13 @@ class RouteCollection
     }
 
     /**
-     * Separa a parte da URI necessária para ser verificada.
+     * Separa a parte da URI necessária para ser verificada. O problema dessa solução está em manter preso ao fato do projeto estar no caminho roteamento-php-vanilla/public/ (o correto seria independente do diretório funcionar).
      * @param string $uri
      * @return string
      */
     private function parseUri(string $uri)
     {
+        // TODO: Criar maneira de separar a URI somente após o public
         // Separa a URI por barras.
         $separatedUri = $this->explodeUri($uri);
         

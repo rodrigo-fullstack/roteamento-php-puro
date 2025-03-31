@@ -109,7 +109,7 @@ class Dispatcher
             $dependencies[] = $dependency; 
         }
         
-            // Se há dependências para ser injetadas, atribui ao array de parâmetros que pode estar incluso com parâmetros de query params.
+        // Se há dependências para ser injetadas, atribui ao array de parâmetros que pode estar incluso com parâmetros de query params.
         if(!empty($dependencies)){
 
             // Se somente houver dependências para ser injetadas retorna elas mesmas para ser o array de parâmetros.
@@ -122,7 +122,10 @@ class Dispatcher
             // Se não, atribui ao array de parâmetros todas as dependências uma a uma na ordem em que foram encontradas. (Algoritmo de Notação Big O Quadrática).
             // TODO: Buscar solução para remover notação Big O Quadrática antiperformance.
             for($i = 0; $i < count($dependencies); $i++){
+                // Atribui array com novo elemento
                 $params = $this->insertInPosition($dependencies[$i], $i, $params);
+
+                
             }
         }
 
