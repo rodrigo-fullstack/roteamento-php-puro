@@ -39,7 +39,7 @@ class Core
      */
     public function post(string $pattern, callable | string $callback): void
     {
-        $this->routes->add('POST', $pattern, $callback);
+        $this->routes->add('post', $pattern, $callback);
 
     }
 
@@ -51,7 +51,7 @@ class Core
      */
     public function put(string $pattern, callable | string $callback): void
     {
-        $this->routes->add('PUT', $pattern, $callback);
+        $this->routes->add('put', $pattern, $callback);
 
     }
 
@@ -63,7 +63,7 @@ class Core
      */
     public function delete(string $pattern, callable | string $callback): void
     {
-        $this->routes->add('DELETE', $pattern, $callback);
+        $this->routes->add('delete', $pattern, $callback);
     }
 
     /**

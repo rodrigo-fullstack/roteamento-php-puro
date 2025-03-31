@@ -53,6 +53,7 @@ class Controller
         echo '<pre>';
         print_r('Request: ');
         print_r($request);
+        print_r($request->getBody());
 
     }
 

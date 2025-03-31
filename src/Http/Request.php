@@ -104,15 +104,7 @@ class Request
     public function setBody()
     {
         // Define com base no método da requisição.
-        $this->body = match ($this->method) {
-            // Recebe todos os dados de get
-            'get' => $_GET,
-            // Recebe todos os dados de post
-            'post' => $_POST,
-            // Recebe todos os dados de put e delete decodificando um json
-            'put', 'delete' => json_decode(file_get_contents('php://input'), true) ?? [],
-            default         => []
-        };
+        $this->body = json_decode(file_get_contents('php://input'), true);
     }
 
     /**
